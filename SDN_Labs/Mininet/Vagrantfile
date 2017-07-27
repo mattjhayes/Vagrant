@@ -1,0 +1,50 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby:
+
+# Vagrant script for a single guest that runs Mininet SDN lab
+
+#*** Provisioning Script that runs in the guest box:
+$script = <<SCRIPT
+    #*** Install Mininet:
+    sudo apt-get -y install mininet
+
+    #*** Test Mininet:
+    sudo mn --test pingall
+    
+    #*** Set up aliases
+    echo '
+        # Run Mininet:
+        alias mnt="sudo mn"' >> ~/.bash_aliases
+
+    #*** Read in aliases for current session:
+    source ~/.bash_aliases
+SCRIPT
+
+## Vagrant config
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  #*** justMininet:
+  config.vm.define "justMininet" do |justMininet|
+    #*** Select box (uncomment either bento server or boxcutter desktop):
+    #justMininet.vm.box = "boxcutter/ubuntu1604-desktop"
+    justMininet.vm.box = "bento/ubuntu-16.04"
+    
+    #*** Set hostname:
+    justMininet.vm.hostname = "justMininet"
+
+    #*** Virtualbox-specific settings:
+    justMininet.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "2"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script as unprivileged user 'vagrant':
+    justMininet.vm.provision "shell", inline: $script, privileged: false
+  end
+end
+
