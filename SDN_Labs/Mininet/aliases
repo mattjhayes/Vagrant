@@ -1,0 +1,2 @@
+# Run Mininet:
+alias mnt="sudo mn"
