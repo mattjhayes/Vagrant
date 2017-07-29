@@ -16,7 +16,8 @@ pip install --upgrade pip
 #*** Clone Ryu from GitHub
 cd ~/
 git clone git://github.com/osrg/ryu.git
-cd ryu; pip install .
+cd ryu
+sudo pip install .
 
 #*** Set up aliases from file in synced_folder:
 cp /vagrant/aliases ~/.bash_aliases
