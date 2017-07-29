@@ -1,7 +1,7 @@
 Mininet Virtual Lab
 ===================
 
-This repo contains Vagrant files that stand up a single-guest Mininet virtual SDN lab
+This directory contains Vagrant files that stand up a single-guest Mininet virtual SDN lab
 
 +--------------------------+---------------------+
 | Number of Guests         |                   1 |

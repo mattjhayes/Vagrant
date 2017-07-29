@@ -1,7 +1,7 @@
 Ryu and nmeta Multi-Guest Virtual Lab
 =====================================
 
-This repo contains Vagrant files that stand up a multi-guest Open vSwitch and 
+This directory contains Vagrant files that stand up a multi-guest Open vSwitch and 
 Ryu controller with nmeta app virtual SDN lab.
 
 +--------------------------+---------------------+

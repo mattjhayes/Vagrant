@@ -1,7 +1,7 @@
 Mininet & Ryu (git install) Virtual Lab
 =======================================
 
-This repo contains Vagrant files that stand up a single-guest Mininet and 
+This directory contains Vagrant files that stand up a single-guest Mininet and 
 Ryu controller virtual SDN lab. Ryu is installed via git, instead of pip, to
 allow patches to be applied if desired.
 

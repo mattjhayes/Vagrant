@@ -16,6 +16,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #*** Set hostname:
     mininetRyuGit.vm.hostname = "mininetRyuGit"
 
+    #*** Port forwarding to allow access from host to nmeta WebUI (Windows Firewall update required)
+    mininetRyuGit.vm.network "forwarded_port", guest: 8081, host: 58081
+
     #*** Virtualbox-specific settings:
     mininetRyuGit.vm.provider :virtualbox do |vb|
       #*** Set number of CPUs:

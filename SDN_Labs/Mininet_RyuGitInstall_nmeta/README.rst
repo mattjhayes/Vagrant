@@ -1,7 +1,7 @@
 Mininet & Ryu (git install) Virtual Lab
 =======================================
 
-This repo contains Vagrant files that stand up a single-guest Mininet and 
+This directory contains Vagrant files that stand up a single-guest Mininet and 
 Ryu controller virtual SDN lab. Ryu is installed via git, instead of pip, to
 allow patches to be applied if desired.
 
@@ -20,6 +20,9 @@ allow patches to be applied if desired.
 +--------------------------+---------------------+
 | OpenFlow Switch          |             Mininet |
 +--------------------------+---------------------+
+
+Port tcp-58081 on host forwards to tcp-8081 on guest to allow access to nmeta WebUI on this URL:
+`http://localhost:58081/webUI/index.html`_
 
 Run the Lab
 -----------
