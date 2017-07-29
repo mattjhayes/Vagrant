@@ -3,107 +3,6 @@
 
 # Vagrant script for a multi-guest VirtualBox SDN lab with Ryu/nmeta
 
-#*** Provisioning Scripts that run in the guests:
-
-#*** Provision client guests:
-$client_script = <<SCRIPT
-    #*** TBD
-SCRIPT
-
-#*** Provision server guests:
-$server_script = <<SCRIPT
-    #*** TBD
-SCRIPT
-
-#*** Provision switch guests:
-$switch_script = <<SCRIPT
-    #*** Install Open vSwitch:
-    sudo apt-get -y install openvswitch-switch
-
-    #*** Configure Open vSwitch:
-    sudo ovs-vsctl add-br br0
-    sudo ovs-vsctl add-port br0 enp0s8
-    sudo ovs-vsctl add-port br0 enp0s9
-    sudo ovs-vsctl add-port br0 enp0s17
-    sudo ovs-vsctl set bridge br0 other-config:datapath-id=0000000000000001
-    sudo ovs-vsctl set bridge br0 protocols=OpenFlow13
-    #*** Note: doesn't work with official 6533 port, so use old port...???:
-    sudo ovs-vsctl set-controller br0 tcp:172.16.0.3:6633
-
-    #*** Set up aliases
-    echo 'alias ovshow="sudo ovs-vsctl show"
-        alias ovf="sudo ovs-ofctl dump-flows br0 -O OpenFlow13"
-        alias ovsw="sudo ovs-ofctl show br0 -O OpenFlow13"
-        alias ovport="sudo ovs-vsctl list port"
-        alias ovqos="sudo ovs-vsctl list qos"
-        alias ovqueue="sudo ovs-vsctl list queue"
-        #
-        # Non-OF MAC table to switch ports:
-        alias mactable="sudo ovs-appctl fdb/show br0"' >> ~/.bash_aliases
-
-    #*** Read in aliases for current session:
-    source ~/.bash_aliases
-
-    #*** Install LLDP:
-    sudo apt-get -y install lldpd
-SCRIPT
-
-#*** Provision sw1 specific guest configuration:
-$sw1_script = <<SCRIPT
-    #*** Set Open vSwitch DPID to 1:
-    sudo ovs-vsctl set bridge br0 other-config:datapath-id=0000000000000001
-SCRIPT
-
-#*** Provision sw2 specific guest configuration:
-$sw2_script = <<SCRIPT
-    #*** Set Open vSwitch DPID to 2:
-    sudo ovs-vsctl set bridge br0 other-config:datapath-id=0000000000000002
-SCRIPT
-
-#*** Controller ct1 Provisioning:
-$ct1_script = <<SCRIPT
-    # First set of packages:
-    sudo apt-get update
-    sudo apt-get install -y python-pip git git-flow python-pytest python-yaml
-
-    # pip packages::
-    pip install --upgrade pip
-    pip2.7 install ryu dpkt mock requests simplejson eve coloredlogs voluptuous --user
-
-    # MongoDB:
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-    echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-    sudo apt-get update
-    sudo apt-get install -y mongodb-org
-    systemctl enable mongod.service
-    sudo service mongod start
-
-    #*** Clone nmeta
-    cd ~/
-    git clone https://github.com/mattjhayes/nmeta.git
-    
-    #*** Set up aliases
-    echo '
-        # Test nmeta:
-        alias nmt="cd ~/nmeta/tests/; py.test"
-        #
-        # Run nmeta:
-        alias nm="ryu-manager ~/nmeta/nmeta/nmeta.py"
-        #
-        # Run nmeta external API:
-        alias nma="~/nmeta/nmeta/api_external.py"
-        #
-        # Retrieve Packet-In rate via external API:
-        alias nma_pi_rate="curl http://localhost:8081/v1/infrastructure/controllers/pi_rate/ | python -m json.tool"
-        #
-        # Simple Switch 13
-        alias ss="ryu-manager ~/.local/lib/python2.7/site-packages/ryu/app/simple_switch_13.py --verbose"' >> ~/.bash_aliases
-
-    #*** Read in aliases for current session:
-    source ~/.bash_aliases
-SCRIPT
-
-
 #*** Vagrant Configuration for Guest Parameters:
 
 ## Vagrant config
@@ -138,8 +37,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--nicpromisc6", "allow-all"]
     end
     #*** Run provision scripts:
-    sw1.vm.provision "shell", inline: $switch_script, privileged: false
-    sw1.vm.provision "shell", inline: $sw1_script, privileged: false
+    sw1.vm.provision :shell, path: "bootstrap_swX.sh", privileged: false
+    sw1.vm.provision :shell, path: "bootstrap_sw1.sh", privileged: false
   end
 
   #*** Switch 2 (sw2):
@@ -169,8 +68,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--nicpromisc6", "allow-all"]
     end
     #*** Run provision scripts:
-    sw2.vm.provision "shell", inline: $switch_script, privileged: false
-    sw2.vm.provision "shell", inline: $sw2_script, privileged: false
+    sw2.vm.provision :shell, path: "bootstrap_swX.sh", privileged: false
+    sw2.vm.provision :shell, path: "bootstrap_sw2.sh", privileged: false
   end
 
   #*** Client (pc1):
@@ -193,7 +92,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
     end
     #*** Run provision script:
-    pc1.vm.provision "shell", inline: $client_script, privileged: false
+    pc1.vm.provision :shell, path: "bootstrap_pc1.sh", privileged: false
   end
 
   #*** Server (sv1):
@@ -216,7 +115,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
     end
     #*** Run provision script:
-    sv1.vm.provision "shell", inline: $server_script, privileged: false
+    sv1.vm.provision :shell, path: "bootstrap_sv1.sh", privileged: false
   end
 
   #*** Controller (ct1):
@@ -241,8 +140,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
     end
     #*** Run provision script as unprivileged user 'vagrant':
-    ct1.vm.provision "shell", inline: $ct1_script, privileged: false
+    ct1.vm.provision :shell, path: "bootstrap_ct1.sh", privileged: false
   end
-
 end
 

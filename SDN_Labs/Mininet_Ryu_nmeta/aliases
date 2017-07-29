@@ -1,0 +1,14 @@
+# Test nmeta:
+alias nmt="cd ~/nmeta/tests/; py.test"
+#
+# Run nmeta:
+alias nm="ryu-manager ~/nmeta/nmeta/nmeta.py"
+#
+# Run nmeta external API:
+alias nma="~/nmeta/nmeta/api_external.py"
+#
+# Run Mininet:
+alias mnt="sudo mn --controller remote"
+#
+# Retrieve Packet-In rate via external API:
+alias nma_pi_rate="curl http://localhost:8081/v1/infrastructure/controllers/pi_rate/ | python -m json.tool"

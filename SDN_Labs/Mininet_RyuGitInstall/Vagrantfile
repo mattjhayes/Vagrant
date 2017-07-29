@@ -1,23 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby:
 
-# Vagrant script for a single guest that runs Mininet SDN lab with Ryu/nmeta
+# Vagrant script for a single guest that runs Mininet SDN lab
 
 ## Vagrant config
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  #*** mnlab:
-  config.vm.define "mnlab" do |mnlab|
+  #*** Configure mininetRyuGit guest:
+  config.vm.define "mininetRyuGit" do |mininetRyuGit|
     #*** Select box (uncomment either bento server or boxcutter desktop):
-    #mnlab.vm.box = "boxcutter/ubuntu1604-desktop"
-    mnlab.vm.box = "bento/ubuntu-16.04"
+    #mininetRyuGit.vm.box = "boxcutter/ubuntu1604-desktop"
+    mininetRyuGit.vm.box = "bento/ubuntu-16.04"
     
     #*** Set hostname:
-    mnlab.vm.hostname = "mnlab"
+    mininetRyuGit.vm.hostname = "mininetRyuGit"
 
     #*** Virtualbox-specific settings:
-    mnlab.vm.provider :virtualbox do |vb|
+    mininetRyuGit.vm.provider :virtualbox do |vb|
       #*** Set number of CPUs:
       vb.cpus = "2"
       #*** Set RAM:
@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
     end
     #*** Run provision script as unprivileged user 'vagrant':
-    mnlab.vm.provision :shell, path: "bootstrap.sh", privileged: false
+    mininetRyuGit.vm.provision :shell, path: "bootstrap.sh", privileged: false
   end
 end
 
