@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby:
+
+# Vagrant script for a single guest that runs Mininet SDN lab
+
+## Vagrant config
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  #*** Configure mininetRyuGit guest:
+  config.vm.define "mininetRyuGit" do |mininetRyuGit|
+    #*** Select box (uncomment either bento server or boxcutter desktop):
+    #mininetRyuGit.vm.box = "boxcutter/ubuntu1604-desktop"
+    mininetRyuGit.vm.box = "bento/ubuntu-16.04"
+    
+    #*** Set hostname:
+    mininetRyuGit.vm.hostname = "mininetRyuGit"
+
+    #*** Port forwarding to allow access from host to nmeta WebUI (Windows Firewall update required)
+    mininetRyuGit.vm.network "forwarded_port", guest: 8081, host: 58081
+
+    #*** Virtualbox-specific settings:
+    mininetRyuGit.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "2"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script as unprivileged user 'vagrant':
+    mininetRyuGit.vm.provision :shell, path: "bootstrap.sh", privileged: false
+  end
+end
+
