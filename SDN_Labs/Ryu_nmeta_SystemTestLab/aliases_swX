@@ -1,0 +1,9 @@
+alias ovshow="sudo ovs-vsctl show"
+alias ovf="sudo ovs-ofctl dump-flows br0 -O OpenFlow13"
+alias ovsw="sudo ovs-ofctl show br0 -O OpenFlow13"
+alias ovport="sudo ovs-vsctl list port"
+alias ovqos="sudo ovs-vsctl list qos"
+alias ovqueue="sudo ovs-vsctl list queue"
+#
+# Non-OF MAC table to switch ports:
+alias mactable="sudo ovs-appctl fdb/show br0"

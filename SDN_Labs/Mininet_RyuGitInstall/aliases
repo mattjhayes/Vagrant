@@ -1,0 +1,5 @@
+# Simple Switch 13
+alias ss="ryu-manager ~/ryu/app/simple_switch_13.py --verbose"
+
+# Run Mininet with Ryu:
+alias mnt="sudo mn --controller remote"
