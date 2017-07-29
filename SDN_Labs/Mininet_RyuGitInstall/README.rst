@@ -1,7 +1,9 @@
-Mininet Virtual Lab
-===================
+Mininet & Ryu (git install) Virtual Lab
+=======================================
 
-This repo contains Vagrant files that stand up a single-guest Mininet virtual SDN lab
+This repo contains Vagrant files that stand up a single-guest Mininet and 
+Ryu controller virtual SDN lab. Ryu is installed via git, instead of pip, to
+allow patches to be applied if desired.
 
 +--------------------------+------------+
 | Number of Guests         |          1 |
@@ -10,9 +12,7 @@ This repo contains Vagrant files that stand up a single-guest Mininet virtual SD
 +--------------------------+------------+
 | Total Virtual RAM        |       1 GB |
 +--------------------------+------------+
-| SDN App                  |       None |
-+--------------------------+------------+
-| SDN Controller           |    Mininet |
+| SDN Controller           |        Ryu |
 +--------------------------+------------+
 | OpenFlow Switch          |    Mininet |
 +--------------------------+------------+
