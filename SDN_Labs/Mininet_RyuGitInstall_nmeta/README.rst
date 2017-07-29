@@ -1,7 +1,9 @@
-Mininet Virtual Lab
-===================
+Mininet & Ryu (git install) Virtual Lab
+=======================================
 
-This repo contains Vagrant files that stand up a single-guest Mininet virtual SDN lab
+This repo contains Vagrant files that stand up a single-guest Mininet and 
+Ryu controller virtual SDN lab. Ryu is installed via git, instead of pip, to
+allow patches to be applied if desired.
 
 +--------------------------+---------------------+
 | Number of Guests         |                   1 |
@@ -12,9 +14,9 @@ This repo contains Vagrant files that stand up a single-guest Mininet virtual SD
 +--------------------------+---------------------+
 | Total Virtual RAM        |                1 GB |
 +--------------------------+---------------------+
-| SDN App                  |                None |
+| SDN App                  |               nmeta |
 +--------------------------+---------------------+
-| SDN Controller           |             Mininet |
+| SDN Controller           |   Ryu (git install) |
 +--------------------------+---------------------+
 | OpenFlow Switch          |             Mininet |
 +--------------------------+---------------------+
@@ -22,6 +24,6 @@ This repo contains Vagrant files that stand up a single-guest Mininet virtual SD
 Run the Lab
 -----------
 
-Clone the repo, open a command prompt and navigate to this directory, then type *vagrant up*
+Clone the repo, open a command prompt and navigate to this directory then type *vagrant up*
 
 You can SSH onto the guest at localhost on port 2222, username and password are both *vagrant*
