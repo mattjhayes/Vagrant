@@ -1,0 +1,102 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby:
+
+# Vagrant script for a multi-guest VirtualBox SDN lab with Ryu/nmeta
+
+#*** Vagrant Configuration for Guest Parameters:
+
+## Vagrant config
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  #*** Client (pc1):
+  config.vm.define "pc1" do |pc1|
+    #*** Define box and hostname:
+    pc1.vm.box = "bento/ubuntu-16.04"
+    pc1.vm.hostname = "pc1"
+
+    #*** Initial network interface configuration:
+    pc1.vm.network "private_network", ip: "10.1.0.12", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1"
+
+    #*** Virtualbox-specific settings:
+    pc1.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "1"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script:
+    pc1.vm.provision :shell, path: "bootstrap_pc1.sh", privileged: false
+  end
+
+  #*** Router 1 (rt1):
+  config.vm.define "rt1" do |rt1|
+    #*** Define box and hostname:
+    rt1.vm.box = "bento/ubuntu-16.04"
+    rt1.vm.hostname = "rt1"
+
+    #*** Initial network interface configuration:
+    rt1.vm.network "private_network", ip: "10.1.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1"
+    rt1.vm.network "private_network", ip: "10.2.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2"
+
+    #*** Virtualbox-specific settings:
+    rt1.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "1"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script:
+    rt1.vm.provision :shell, path: "bootstrap_rt1.sh", privileged: false
+  end
+
+  #*** Router 2 (rt2):
+  config.vm.define "rt2" do |rt2|
+    #*** Define box and hostname:
+    rt2.vm.box = "bento/ubuntu-16.04"
+    rt2.vm.hostname = "rt2"
+
+    #*** Initial network interface configuration:
+    rt2.vm.network "private_network", ip: "10.3.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1"
+    rt2.vm.network "private_network", ip: "10.2.0.2", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2"
+
+    #*** Virtualbox-specific settings:
+    rt2.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "1"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script:
+    rt2.vm.provision :shell, path: "bootstrap_rt2.sh", privileged: false
+  end
+
+  #*** Server (sv1):
+  config.vm.define "sv1" do |sv1|
+    #*** Define box and hostname:
+    sv1.vm.box = "bento/ubuntu-16.04"
+    sv1.vm.hostname = "sv1"
+
+    #*** Initial network interface configuration:
+    sv1.vm.network "private_network", ip: "10.3.0.40", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1"
+
+    #*** Virtualbox-specific settings:
+    sv1.vm.provider :virtualbox do |vb|
+      #*** Set number of CPUs:
+      vb.cpus = "1"
+      #*** Set RAM:
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+      #*** Run non-headless:
+      vb.gui = true
+    end
+    #*** Run provision script:
+    sv1.vm.provision :shell, path: "bootstrap_sv1.sh", privileged: false
+  end
+end
