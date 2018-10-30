@@ -2,13 +2,13 @@
 alias get="wget http://10.3.0.40/sv1_1500_byte.txt"
 
 # POST 1500 byte file to Server 1:
-alias get="wget --post-file pc1_1500_byte.txt http://10.3.0.40/"
+alias post="wget --post-file pc1_1500_byte.txt http://10.3.0.40/"
 
 # Ping Server 1 normal:
 alias p1="ping 10.3.0.40"
 
 # Ping Server 2 fragmented (1472 allows 20 byte IP and 8 byte ICMP headers):
-alias p2="ping 10.3.0.40 -s 1472 -m dont"
+alias p2="ping 10.3.0.40 -s 1472 -M dont"
 
 # Ping Server 2 fails do not frag:
 alias p3="ping 10.3.0.40 -s 1472 -M do"

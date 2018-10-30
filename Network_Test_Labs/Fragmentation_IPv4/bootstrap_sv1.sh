@@ -20,4 +20,4 @@ sudo python3 -m http.server 80&
 # Create a simple file to serve:
 # (phrase "This is a test file that needs fragmented packets" is 50 chars)
 # and repeat 30 times
-yes This is a test file that needs fragmented packets | head -n 30 > 1500byte.txt
+yes This is a test file that needs fragmented packets | head -n 30 > sv1_1500_byte.txt
