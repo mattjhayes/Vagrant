@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     pc1.vm.hostname = "pc1"
 
     #*** Initial network interface configuration:
-    pc1.vm.network "private_network", ip: "10.1.0.12", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1"
+    pc1.vm.network "private_network", ip: "10.1.0.12", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1", nic_type: "Am79C973"
 
     #*** Virtualbox-specific settings:
     pc1.vm.provider :virtualbox do |vb|
@@ -39,8 +39,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rt1.vm.hostname = "rt1"
 
     #*** Initial network interface configuration:
-    rt1.vm.network "private_network", ip: "10.1.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1"
-    rt1.vm.network "private_network", ip: "10.2.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2"
+    rt1.vm.network "private_network", ip: "10.1.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Client1-Router1", nic_type: "Am79C973"
+    rt1.vm.network "private_network", ip: "10.2.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2", nic_type: "Am79C973"
 
     #*** Virtualbox-specific settings:
     rt1.vm.provider :virtualbox do |vb|
@@ -62,8 +62,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rt2.vm.hostname = "rt2"
 
     #*** Initial network interface configuration:
-    rt2.vm.network "private_network", ip: "10.3.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1"
-    rt2.vm.network "private_network", ip: "10.2.0.2", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2"
+    rt2.vm.network "private_network", ip: "10.3.0.1", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1", nic_type: "Am79C973"
+    rt2.vm.network "private_network", ip: "10.2.0.2", netmask: "255.255.255.0", virtualbox__intnet: "Router1-Router2", nic_type: "Am79C973"
 
     #*** Virtualbox-specific settings:
     rt2.vm.provider :virtualbox do |vb|
@@ -85,7 +85,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     sv1.vm.hostname = "sv1"
 
     #*** Initial network interface configuration:
-    sv1.vm.network "private_network", ip: "10.3.0.40", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1"
+    sv1.vm.network "private_network", ip: "10.3.0.40", netmask: "255.255.255.0", virtualbox__intnet: "Router2-Server1", nic_type: "Am79C973"
 
     #*** Virtualbox-specific settings:
     sv1.vm.provider :virtualbox do |vb|
