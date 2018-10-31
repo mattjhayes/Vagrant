@@ -1,7 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby:
 
-# Vagrant script for a multi-guest VirtualBox SDN lab with Ryu/nmeta
+# Vagrant script for setting up an IP Fragmentation Lab
+# See blog post at https://mattjhayes.com/2018/10/31/create-an-ip-fragmentation-lab-with-vagrant/
 
 #*** Vagrant Configuration for Guest Parameters:
 
